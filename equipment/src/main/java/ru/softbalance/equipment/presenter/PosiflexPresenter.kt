@@ -7,8 +7,8 @@ import ru.softbalance.equipment.model.DeviceConnectionType
 import ru.softbalance.equipment.model.Task
 import ru.softbalance.equipment.model.posiflex.Posiflex
 import ru.softbalance.equipment.view.fragment.PosiflexFragment
-import rx.android.schedulers.AndroidSchedulers
-import rx.subscriptions.Subscriptions
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 
 class PosiflexPresenter(context: Context, settings: String) : Presenter<PosiflexFragment>(context) {
 
@@ -58,7 +58,7 @@ class PosiflexPresenter(context: Context, settings: String) : Presenter<Posiflex
         }
     }
 
-    private var testPrintSubscription = Subscriptions.unsubscribed()
+    private var testPrintSubscription: Disposable? = null
 
     private var areSettingsValid: Boolean = false
 
@@ -71,7 +71,7 @@ class PosiflexPresenter(context: Context, settings: String) : Presenter<Posiflex
         val tasks = listOf(Task().apply { data = context.getString(R.string.text_print) })
         testPrintSubscription = driver.execute(tasks, true)
                 .doOnSubscribe { view?.showLoading(getString(R.string.test_print)) }
-                .doOnUnsubscribe { view?.hideLoading() }
+                .doOnDispose { view?.hideLoading() }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
                     areSettingsValid = response.isSuccess()
@@ -118,7 +118,9 @@ class PosiflexPresenter(context: Context, settings: String) : Presenter<Posiflex
     }
 
     override fun onFinish() {
-        testPrintSubscription.unsubscribe()
+        if(testPrintSubscription.isActive()) {
+            testPrintSubscription!!.dispose()
+        }
         super.onFinish()
     }
 

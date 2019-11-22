@@ -7,8 +7,10 @@ import ru.softbalance.equipment.model.Task
 import ru.softbalance.equipment.model.TaskType
 import ru.softbalance.equipment.model.atol.Atol
 import ru.softbalance.equipment.view.fragment.AtolFragment
-import rx.Subscription
-import rx.android.schedulers.AndroidSchedulers
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+
+// import io.reactivex.android.schedulers.AndroidSchedulers
 
 class AtolPresenter(context: Context, settings: String) : Presenter<AtolFragment>(context) {
 
@@ -23,9 +25,9 @@ class AtolPresenter(context: Context, settings: String) : Presenter<AtolFragment
         this.settings = settings
     }
 
-    private var printTest: Subscription? = null
-    private var getFrInfo: Subscription? = null
-    private var openShift: Subscription? = null
+    private var printTest: Disposable? = null
+    private var getFrInfo: Disposable? = null
+    private var openShift: Disposable? = null
 
     override fun bindView(view: AtolFragment) {
         super.bindView(view)
@@ -45,9 +47,9 @@ class AtolPresenter(context: Context, settings: String) : Presenter<AtolFragment
     }
 
     override fun onFinish() {
-        printTest?.unsubscribe()
-        getFrInfo?.unsubscribe()
-        openShift?.unsubscribe()
+        printTest?.dispose()
+        getFrInfo?.dispose()
+        openShift?.dispose()
     }
 
     fun testPrint() {
@@ -69,7 +71,7 @@ class AtolPresenter(context: Context, settings: String) : Presenter<AtolFragment
                 driver.execute(tasks, finishAfterExecute = false)
             }
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnUnsubscribe {
+            .doOnDispose {
                 driver.finish()
                 view?.hideLoading()
             }
@@ -116,7 +118,7 @@ class AtolPresenter(context: Context, settings: String) : Presenter<AtolFragment
                         view?.showConfirm("$serialRes, ${sessionRes.frSessionState}")
                     }
             }
-            .doOnUnsubscribe {
+            .doOnDispose {
                 driver.finish()
                 view?.hideLoading()
             }
@@ -135,7 +137,7 @@ class AtolPresenter(context: Context, settings: String) : Presenter<AtolFragment
         val driver = Atol(context, settings)
         openShift = driver.openShift(finishAfterExecute = true)
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnUnsubscribe {
+            .doOnDispose {
                 view?.hideLoading()
             }
             .subscribe({ res ->

@@ -2,7 +2,7 @@ package ru.softbalance.equipment
 
 import android.view.View
 import android.view.ViewConfiguration
-import rx.Subscription
+import io.reactivex.disposables.Disposable
 import java.math.BigDecimal
 
 internal val ONE_HUNDRED = BigDecimal(100)
@@ -36,12 +36,12 @@ internal fun String.toHttpUrl(port: Int): String {
     return url
 }
 
-internal fun Subscription?.isActive(): Boolean {
-    return this != null && !this.isUnsubscribed
+internal fun Disposable?.isActive(): Boolean {
+    return this != null && !this.isDisposed
 }
 
-internal fun Subscription?.isNonActive(): Boolean {
-    return this == null || this.isUnsubscribed
+internal fun Disposable?.isNonActive(): Boolean {
+    return this == null || this.isDisposed
 }
 
 internal class SingleClickListener(val click: (v: View) -> Unit) : View.OnClickListener {

@@ -11,9 +11,9 @@ import ru.softbalance.equipment.model.mapping.jackson.mapper
 import ru.softbalance.equipment.model.posiflex.ports.Port
 import ru.softbalance.equipment.model.posiflex.ports.TcpPort
 import ru.softbalance.equipment.model.posiflex.ports.UsbPort
-import rx.Completable
-import rx.Single
-import rx.schedulers.Schedulers
+import io.reactivex.Completable
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import java.io.IOException
 import java.net.ConnectException
 import java.net.NoRouteToHostException

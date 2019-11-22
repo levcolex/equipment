@@ -14,8 +14,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import com.jakewharton.rxbinding.support.design.widget.RxBottomNavigationView
-import com.jakewharton.rxbinding.widget.RxTextView
+import com.jakewharton.rxbinding2.widget.RxTextView
+import com.jakewharton.rxbinding2.support.design.widget.*
 import ru.softbalance.equipment.R
 import ru.softbalance.equipment.model.DeviceConnectionType
 import ru.softbalance.equipment.presenter.PresentersCache
@@ -24,8 +24,8 @@ import ru.softbalance.equipment.singleClick
 import ru.softbalance.equipment.view.DriverSetupActivity
 import ru.softbalance.equipment.view.ViewUtils
 import ru.softbalance.equipment.visible
-import rx.android.schedulers.AndroidSchedulers
-import rx.subscriptions.CompositeSubscription
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
 
 class ShtrihFragment : BaseFragment() {
@@ -46,7 +46,7 @@ class ShtrihFragment : BaseFragment() {
 
     private lateinit var presenter: ShtrihPresenter
 
-    private val autoDisposable = CompositeSubscription()
+    private val autoDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

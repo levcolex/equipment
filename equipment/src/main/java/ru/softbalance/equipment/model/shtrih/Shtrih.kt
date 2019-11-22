@@ -14,9 +14,9 @@ import ru.softbalance.equipment.model.atol.Atol
 import ru.softbalance.equipment.model.exception.ExecuteException
 import ru.softbalance.equipment.model.mapping.jackson.mapper
 import ru.softbalance.equipment.wrap
-import rx.Completable
-import rx.Single
-import rx.schedulers.Schedulers
+import io.reactivex.Completable
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import java.io.IOException
 import java.math.BigDecimal
 import java.net.ConnectException
@@ -81,7 +81,7 @@ class Shtrih(
             .subscribeOn(Schedulers.io())
             .timeout(CONNECTION_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
             .andThen(executeTasks(tasks))
-            .doOnUnsubscribe { if (finishAfterExecute) finish() }
+            .doOnDispose { if (finishAfterExecute) finish() }
             .toSingle {
                 val response = EquipmentResponse()
                 response.resultCode = ResponseCode.SUCCESS

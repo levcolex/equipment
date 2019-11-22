@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.jakewharton.rxbinding.widget.RxTextView
 import okhttp3.HttpUrl
 import ru.softbalance.equipment.R
 import ru.softbalance.equipment.model.printserver.api.model.PrintDeviceDriver
@@ -18,14 +17,18 @@ import ru.softbalance.equipment.model.printserver.api.model.PrintDeviceType
 import ru.softbalance.equipment.model.printserver.api.response.settings.*
 import ru.softbalance.equipment.presenter.PresentersCache
 import ru.softbalance.equipment.presenter.PrintServerPresenter
-import ru.softbalance.equipment.toHttpUrl
 import ru.softbalance.equipment.view.DriverSetupActivity.Companion.EQUIPMENT_TYPE_ARG
 import ru.softbalance.equipment.view.DriverSetupActivity.Companion.PORT_ARG
 import ru.softbalance.equipment.view.DriverSetupActivity.Companion.SETTINGS_ARG
 import ru.softbalance.equipment.view.DriverSetupActivity.Companion.URL_ARG
 import ru.softbalance.equipment.view.ViewUtils
-import rx.Observable
-import rx.android.schedulers.AndroidSchedulers
+
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import com.jakewharton.rxbinding2.widget.RxTextView
+import io.reactivex.functions.BiFunction
+
+import ru.softbalance.equipment.toHttpUrl
 import java.util.concurrent.TimeUnit
 
 class PrintServerFragment : BaseFragment() {
@@ -113,18 +116,34 @@ class PrintServerFragment : BaseFragment() {
         saveSettings.setOnClickListener { presenter.saveSettings() }
         print.setOnClickListener { presenter.testPrint() }
 
-        Observable.combineLatest(RxTextView.textChanges(url), RxTextView.textChanges(port)) { urlValue, portValue ->
-            urlValue.isNotEmpty()
+
+//        Observable.combineLatest<CharSequence, CharSequence, Boolean>(
+//            RxTextView.textChanges(url),
+//            RxTextView.textChanges(port),
+//            io.reactivex.functions.BiFunction
+//            { urlValue, portValue ->
+//                urlValue.isNotEmpty()
+//                    && portValue.isNotEmpty()
+//                    && HttpUrl.parse(urlValue.toString().toHttpUrl(portValue.toString().toInt())) != null
+//            }
+//        ).subscribe { enabled : Boolean -> connect.isEnabled = enabled }
+
+        Observable.combineLatest(
+            RxTextView.textChanges(url),
+            RxTextView.textChanges(port),
+            BiFunction<CharSequence, CharSequence, Boolean> { urlValue, portValue ->
+                urlValue.isNotEmpty()
                     && portValue.isNotEmpty()
                     && HttpUrl.parse(urlValue.toString().toHttpUrl(portValue.toString().toInt())) != null
-        }.subscribe { enabled -> connect.isEnabled = enabled }
+            }
+        ).subscribe { enabled : Boolean -> connect.isEnabled = enabled }
 
         presenter.bindView(this)
 
         return rootView
     }
 
-    fun updateResult(ok: Boolean) {
+    private fun updateResult(ok: Boolean) {
         if (ok && hostParent is PrintServerFragment.Callback) {
             val callback = hostParent ?: return
             val settings = presenter.zipSettings ?: return
@@ -148,10 +167,10 @@ class PrintServerFragment : BaseFragment() {
                 popupMenu.menu.add(0, i, i, types[i].name)
             }
 
-            popupMenu.setOnMenuItemClickListener({ item ->
+            popupMenu.setOnMenuItemClickListener{ item ->
                 presenter.selectDeviceType(types[item.itemId])
                 true
-            })
+            }
 
             popupMenu.show()
         }
@@ -168,10 +187,10 @@ class PrintServerFragment : BaseFragment() {
                 popupMenu.menu.add(0, i, i, models[i].name)
             }
 
-            popupMenu.setOnMenuItemClickListener({ item ->
+            popupMenu.setOnMenuItemClickListener { item ->
                 presenter.selectModel(models[item.itemId])
                 true
-            })
+            }
 
             popupMenu.show()
         }
@@ -188,10 +207,10 @@ class PrintServerFragment : BaseFragment() {
                 popupMenu.menu.add(0, i, i, drivers[i].name)
             }
 
-            popupMenu.setOnMenuItemClickListener({ item ->
+            popupMenu.setOnMenuItemClickListener { item ->
                 presenter.selectDriver(drivers[item.itemId])
                 true
-            })
+            }
 
             popupMenu.show()
         }

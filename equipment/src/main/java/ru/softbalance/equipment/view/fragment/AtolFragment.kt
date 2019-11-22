@@ -11,8 +11,8 @@ import ru.softbalance.equipment.R
 import ru.softbalance.equipment.presenter.AtolPresenter
 import ru.softbalance.equipment.presenter.PresentersCache
 import ru.softbalance.equipment.view.DriverSetupActivity.Companion.SETTINGS_ARG
-import rx.Observable
-import rx.android.schedulers.AndroidSchedulers
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 
 class AtolFragment : BaseFragment() {

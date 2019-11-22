@@ -6,9 +6,9 @@ import com.atol.drivers.fptr.Fptr
 import com.atol.drivers.fptr.IFptr
 import ru.softbalance.equipment.R
 import ru.softbalance.equipment.model.*
-import rx.Observable
-import rx.Single
-import rx.schedulers.Schedulers
+import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import java.math.BigDecimal
 import java.util.*
 

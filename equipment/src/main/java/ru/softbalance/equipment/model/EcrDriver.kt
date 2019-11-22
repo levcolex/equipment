@@ -1,6 +1,6 @@
 package ru.softbalance.equipment.model
 
-import rx.Single
+import io.reactivex.Single
 
 interface EcrDriver {
 

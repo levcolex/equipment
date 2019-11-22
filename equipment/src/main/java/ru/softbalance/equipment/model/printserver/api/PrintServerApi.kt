@@ -10,7 +10,7 @@ import ru.softbalance.equipment.model.printserver.api.model.SettingsValues
 import ru.softbalance.equipment.model.printserver.api.model.TasksRequest
 import ru.softbalance.equipment.model.printserver.api.response.*
 import ru.softbalance.equipment.model.printserver.api.response.settings.SettingsResponse
-import rx.Single
+import io.reactivex.Single
 
 interface PrintServerApi {
 

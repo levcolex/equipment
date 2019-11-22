@@ -21,13 +21,24 @@ allprojects {
     }
 }
 
+subprojects {
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'com.android.support'
+                    && !details.requested.name.contains('multidex') ) {
+                details.useVersion "27.1.1"
+            }
+        }
+    }
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
 ext {
     appVersionCode = gitCommitCount()
-    appVersionName = "1.9.0"
+    appVersionName = "1.9.2"
     appId = "ru.softbalance.equipmentlibrary"
 
     SDKVersion = 27
@@ -43,9 +54,9 @@ ext {
 
     jacksonVersion = "2.9.3"
 
-    rxJavaVersion = "1.2.3"
-    rxAndroidVersion = "1.2.1"
-    rxBinding = "1.0.1"
+    rxJavaVersion = '2.2.14'
+    rxAndroidVersion = '2.1.1'
+    rxBinding = '2.2.0'
 
     flexBoxLayoutVersion = "0.3.0"
 

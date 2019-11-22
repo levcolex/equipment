@@ -7,6 +7,10 @@ apply from: "../scripts/packageOptions.gradle"
 android {
     compileSdkVersion SDKVersion
     buildToolsVersion buildToolsVersion
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     defaultConfig {
         applicationId appId
         minSdkVersion minSDKVersion

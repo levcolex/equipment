@@ -14,8 +14,8 @@ import ru.softbalance.equipment.model.printserver.api.PrintServerApi
 import ru.softbalance.equipment.model.printserver.api.model.CompressedSettings
 import ru.softbalance.equipment.model.printserver.api.model.TasksRequest
 import ru.softbalance.equipment.toHttpUrl
-import rx.Single
-import rx.schedulers.Schedulers
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
 class PrintServer(
     val context: Context,
