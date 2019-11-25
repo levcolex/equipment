@@ -71,7 +71,7 @@ class AtolPresenter(context: Context, settings: String) : Presenter<AtolFragment
                 driver.execute(tasks, finishAfterExecute = false)
             }
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnDispose {
+            .doFinally {
                 driver.finish()
                 view?.hideLoading()
             }
@@ -118,7 +118,7 @@ class AtolPresenter(context: Context, settings: String) : Presenter<AtolFragment
                         view?.showConfirm("$serialRes, ${sessionRes.frSessionState}")
                     }
             }
-            .doOnDispose {
+            .doFinally {
                 driver.finish()
                 view?.hideLoading()
             }
@@ -137,7 +137,7 @@ class AtolPresenter(context: Context, settings: String) : Presenter<AtolFragment
         val driver = Atol(context, settings)
         openShift = driver.openShift(finishAfterExecute = true)
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnDispose {
+            .doFinally {
                 view?.hideLoading()
             }
             .subscribe({ res ->

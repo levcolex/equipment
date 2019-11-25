@@ -70,7 +70,7 @@ class ShtrihPresenter(context: Context, settings: String) : Presenter<ShtrihFrag
         val tasks = listOf(Task().apply { data = context.getString(R.string.text_print) })
         testPrintSubscription = driver.execute(tasks, true)
             .doOnSubscribe { view?.showLoading(getString(R.string.test_print)) }
-            .doOnDispose { view?.hideLoading() }
+            .doFinally { view?.hideLoading() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ response ->
                 areSettingsValid = response.isSuccess()

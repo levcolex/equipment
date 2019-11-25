@@ -81,7 +81,7 @@ class Shtrih(
             .subscribeOn(Schedulers.io())
             .timeout(CONNECTION_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
             .andThen(executeTasks(tasks))
-            .doOnDispose { if (finishAfterExecute) finish() }
+            .doFinally { if (finishAfterExecute) finish() }
             .toSingle {
                 val response = EquipmentResponse()
                 response.resultCode = ResponseCode.SUCCESS
