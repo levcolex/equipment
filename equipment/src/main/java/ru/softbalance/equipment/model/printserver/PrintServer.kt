@@ -4,7 +4,7 @@ import android.content.Context
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.jackson.JacksonConverterFactory
 import ru.softbalance.equipment.BuildConfig
 import ru.softbalance.equipment.R
@@ -35,7 +35,7 @@ class PrintServer(
         api = Retrofit.Builder()
             .baseUrl(url.toHttpUrl(port))
             .client(getClient())
-            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(JacksonConverterFactory.create(JacksonConfigurator.build()))
             .build()
             .create(PrintServerApi::class.java)

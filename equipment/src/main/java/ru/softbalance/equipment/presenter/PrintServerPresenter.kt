@@ -6,7 +6,6 @@ import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.jackson.JacksonConverterFactory
 import ru.softbalance.equipment.R
 import ru.softbalance.equipment.isActive
@@ -24,6 +23,7 @@ import ru.softbalance.equipment.view.fragment.PrintServerFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 
 class PrintServerPresenter(context: Context,
                            var url: String,
@@ -65,7 +65,7 @@ class PrintServerPresenter(context: Context,
                 .client(OkHttpClient.Builder()
                     .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                     .build())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create(JacksonConfigurator.build()))
                 .build()
                 .create(PrintServerApi::class.java)
